@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Kairo</title>
+    <style>
+        /* CSS general para modo claro/oscuro */
+        :root {
+            /* Modo Claro */
+            --light-bg: #FFFFFF; /* Blanco */
+            --light-primary: #000080; /* Azul Marino */
+            --light-secondary: #F5F5DC; /* Beige */
+            --light-text: #000000; /* Negro */
+            --light-button-hover: #000066; /* Azul Marino más oscuro */
+            --light-input-border: #CCCCCC;
+            --light-input-focus-border: #000080;
+            --light-error-text: #FF0000;
+            --light-card-shadow: rgba(0, 0, 0, 0.05);
+            --light-profile-card-bg: #F8F8F8; /* Fondo de la tarjeta de perfil */
+            --light-nav-bg: #000080; /* Fondo barra nav - Azul Marino */
+            --light-nav-icon: #FFFFFF; /* Iconos y texto nav - Blanco */
+
+            /* Modo Oscuro */
+            --dark-bg: #000000; /* Negro */
+            --dark-primary: #00BFFF; /* Azul Relámpago */
+            --dark-secondary: #F5F5DC; /* Beige Claro */
+            --dark-text: #FFFFFF; /* Blanco */
+            --dark-button-hover: #009ACD; /* Azul Relámpago más oscuro */
+            --dark-input-border: #555555;
+            --dark-input-focus-border: #00BFFF;
+            --dark-card-shadow: rgba(255, 255, 255, 0.1);
+            --dark-profile-card-bg: #1A1A1A; /* Fondo de la tarjeta de perfil */
+            --dark-nav-bg: #00BFFF; /* Fondo barra nav - Azul Relámpago */
+            --dark-nav-icon: #000000; /* Iconos y texto nav - Negro */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+        }
+
+        .container {
+            background-color: var(--light-profile-card-bg); /* Fondo de la tarjeta de perfil */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--light-card-shadow);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            margin-top: 50px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        h1 {
+            color: var(--light-primary);
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            transition: color 0.3s;
+        }
+
+        .profile-info {
+            text-align: left;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 15px 20px;
+            align-items: center;
+        }
+
+        .profile-info strong {
+            color: var(--light-primary);
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .profile-info span {
+            font-size: 1.1em;
+        }
+
+        .profile-actions button {
+            background-color: var(--light-primary);
+            color: var(--light-nav-icon); /* Texto blanco sobre azul marino */
+            border: none;
+            padding: 12px 25px;
+            margin: 10px 10px 0 0;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .profile-actions button:hover {
+            background-color: var(--light-button-hover);
+        }
+
+        #editProfileForm {
+            text-align: left;
+            margin-top: 30px;
+            border-top: 1px solid var(--light-input-border);
+            padding-top: 20px;
+            display: none;
+        }
+
+        #editProfileForm .form-group {
+            margin-bottom: 15px;
+        }
+
+        #editProfileForm .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #editProfileForm .form-group input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid var(--light-input-border);
+            border-radius: 5px;
+            font-size: 1em;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        #editProfileForm .form-group input:focus {
+            border-color: var(--light-input-focus-border);
+            outline: none;
+        }
+
+        /* Modo Oscuro */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--dark-profile-card-bg);
+            box-shadow: 0 10px 30px var(--dark-card-shadow);
+        }
+
+        body.dark-mode h1 {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode .profile-info strong {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode .profile-actions button {
+            background-color: var(--dark-primary);
+            color: var(--dark-nav-icon); /* Texto negro sobre azul relámpago */
+        }
+
+        body.dark-mode .profile-actions button:hover {
+            background-color: var(--dark-button-hover);
+        }
+
+        body.dark-mode #editProfileForm .form-group input {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            border-color: var(--dark-input-border);
+        }
+
+        body.dark-mode #editProfileForm .form-group input:focus {
+            border-color: var(--dark-input-focus-border);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--light-secondary);
+            color: var(--light-text);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--dark-secondary);
+            color: var(--dark-text);
+        }
+
+        /* Barra de navegación (del app_main.html) para mantener consistencia */
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--light-nav-bg); /* Fondo de la barra de navegación */
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--light-nav-icon); /* Color de los iconos y texto en la barra de navegación */
+            font-size: 0.8em;
+            transition: color 0.3s;
+        }
+
+        .nav-item i {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .nav-item:hover {
+            color: var(--light-secondary);
+        }
+
+        body.dark-mode .navbar {
+            background-color: var(--dark-nav-bg); /* Fondo de la barra de navegación en modo oscuro */
+            box-shadow: 0 -5px 15px var(--dark-card-shadow);
+        }
+
+        body.dark-mode .nav-item {
+            color: var(--dark-nav-icon); /* Color de los iconos y texto en la barra de navegación en modo oscuro */
+        }
+        body.dark-mode .nav-item:hover {
+            color: var(--dark-secondary);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
+
+    <div class="container">
+        <h1>Mi Perfil</h1>
+        <div class="profile-info">
+            <strong>Nombre:</strong> <span id="profileName">Cargando...</span>
+            <strong>Apellido:</strong> <span id="profileLastname">Cargando...</span>
+            <strong>Nombre de Usuario:</strong> <span id="profileUsername">Cargando...</span>
+            <strong>Email:</strong> <span id="profileEmail">Cargando...</span>
+            <strong>Rol:</strong> <span id="profileRole">Cargando...</span>
+        </div>
+        <div class="profile-actions">
+            <button id="editProfileBtn">Editar Perfil</button>
+            <button id="signOutBtn">Cerrar Sesión</button>
+        </div>
+
+        <form id="editProfileForm">
+            <h2>Editar Datos</h2>
+            <div class="form-group">
+                <label for="editName">Nombre:</label>
+                <input type="text" id="editName" name="editName" required>
+            </div>
+            <div class="form-group">
+                <label for="editLastname">Apellido:</label>
+                <input type="text" id="editLastname" name="editLastname" required>
+            </div>
+            <div class="form-group">
+                <label for="editUsername">Nombre de Usuario:</label>
+                <input type="text" id="editUsername" name="editUsername" required>
+            </div>
+            <button type="submit">Guardar Cambios</button>
+            <button type="button" id="cancelEditBtn">Cancelar</button>
+        </form>
+    </div>
+
+    <nav class="navbar">
+        <a href="app_main.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <i class="fas fa-cog"></i>
+            <span>Configuración</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user-circle"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVG2lINPrhmVHkSaxHJZGBqoxS30oSHTs",
+            authDomain: "kairo-f0cbb.firebaseapp.com",
+            projectId: "kairo-f0cbb",
+            storageBucket: "kairo-f0cbb.firebasestorage.app",
+            messagingSenderId: "513362025272",
+            appId: "1:513362025272:web:a158340fc21ea598d1ffcd",
+            measurementId: "G-HVDZ4RB09D"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            window.toggleTheme = toggleTheme;
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        document.getElementById('profileName').textContent = userData.name || 'N/A';
+                        document.getElementById('profileLastname').textContent = userData.lastname || 'N/A';
+                        document.getElementById('profileUsername').textContent = userData.username || 'N/A';
+                        document.getElementById('profileEmail').textContent = userData.email || 'N/A';
+                        document.getElementById('profileRole').textContent = userData.role || 'Alumno';
+
+                        document.getElementById('editName').value = userData.name || '';
+                        document.getElementById('editLastname').value = userData.lastname || '';
+                        document.getElementById('editUsername').value = userData.username || '';
+                    } else {
+                        console.warn("No se encontraron datos de perfil en Firestore para el usuario:", user.uid);
+                        alert("¡Bienvenido! No se encontraron datos adicionales de tu perfil. Por favor, completa tu información.");
+                    }
+                } else {
+                    alert('Debes iniciar sesión para ver tu perfil.');
+                    window.location.href = 'index.html';
+                }
+            });
+        };
+
+        document.getElementById('editProfileBtn').addEventListener('click', function() {
+            document.getElementById('editProfileForm').style.display = 'block';
+        });
+
+        document.getElementById('cancelEditBtn').addEventListener('click', function() {
+            document.getElementById('editProfileForm').style.display = 'none';
+        });
+
+        document.getElementById('editProfileForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const newName = document.getElementById('editName').value.trim();
+            const newLastname = document.getElementById('editLastname').value.trim();
+            const newUsername = document.getElementById('editUsername').value.trim();
+
+            if (!newName || !newLastname || !newUsername) {
+                alert('Todos los campos son obligatorios.');
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    const userDocRef = doc(db, 'users', user.uid);
+                    await updateDoc(userDocRef, {
+                        name: newName,
+                        lastname: newLastname,
+                        username: newUsername
+                    });
+                    alert('Perfil actualizado exitosamente!');
+                    document.getElementById('editProfileForm').style.display = 'none';
+                    document.getElementById('profileName').textContent = newName;
+                    document.getElementById('profileLastname').textContent = newLastname;
+                    document.getElementById('profileUsername').textContent = newUsername;
+
+                } catch (error) {
+                    console.error('Error al actualizar el perfil:', error);
+                    alert('Hubo un error al actualizar tu perfil. Inténtalo de nuevo.');
+                }
+            } else {
+                alert('No hay usuario logueado.');
+                window.location.href = 'index.html';
+            }
+        });
+
+
+        document.getElementById('signOutBtn').addEventListener('click', async function() {
+            try {
+                await signOut(auth);
+                alert('¡Sesión cerrada correctamente!');
+                localStorage.removeItem('currentUser');
+                sessionStorage.clear();
+
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Error al cerrar sesión:', error);
+                alert('Hubo un error al cerrar sesión. Por favor, inténtalo de nuevo.');
+            }
+        });
+    </script>
+</body>
+</html>

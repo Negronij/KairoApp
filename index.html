@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido - Kairo</title>
+    <style>
+        /* CSS general para modo claro/oscuro */
+        :root {
+            /* Modo Claro */
+            --light-bg: #FFFFFF; /* Blanco */
+            --light-primary: #000080; /* Azul Marino */
+            --light-secondary: #F5F5DC; /* Beige */
+            --light-text: #000000; /* Negro */
+            --light-button-hover: #000066; /* Azul Marino más oscuro */
+            --light-input-border: #CCCCCC;
+            --light-input-focus-border: #000080;
+            --light-card-shadow: rgba(0, 0, 0, 0.05);
+            --light-nav-bg: #000080; /* Fondo barra nav - Azul Marino */
+            --light-nav-icon: #FFFFFF; /* Iconos y texto nav - Blanco */
+
+            /* Modo Oscuro */
+            --dark-bg: #000000; /* Negro */
+            --dark-primary: #00BFFF; /* Azul Relámpago */
+            --dark-secondary: #F5F5DC; /* Beige Claro */
+            --dark-text: #FFFFFF; /* Blanco */
+            --dark-button-hover: #009ACD; /* Azul Relámpago más oscuro */
+            --dark-input-border: #555555;
+            --dark-input-focus-border: #00BFFF;
+            --dark-card-shadow: rgba(255, 255, 255, 0.1);
+            --dark-nav-bg: #00BFFF; /* Fondo barra nav - Azul Relámpago */
+            --dark-nav-icon: #000000; /* Iconos y texto nav - Negro */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--light-bg); /* Por defecto modo claro */
+            color: var(--light-text);
+        }
+
+        .container {
+            background-color: var(--light-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--light-card-shadow);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        h1 {
+            color: var(--light-primary);
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            transition: color 0.3s;
+        }
+
+        p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            background-color: var(--light-primary);
+            color: var(--light-nav-icon); /* Texto blanco sobre azul marino */
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--light-button-hover);
+        }
+
+        /* Modo Oscuro */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--dark-bg);
+            box-shadow: 0 10px 30px var(--dark-card-shadow);
+        }
+
+        body.dark-mode h1 {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode button {
+            background-color: var(--dark-primary);
+            color: var(--dark-nav-icon); /* Texto negro sobre azul relámpago */
+        }
+
+        body.dark-mode button:hover {
+            background-color: var(--dark-button-hover);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--light-secondary);
+            color: var(--light-text);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--dark-secondary);
+            color: var(--dark-text);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
+
+    <div class="container">
+        <h1>Bienvenido a Kairo</h1>
+        <p>Tu plataforma para gestionar y participar en tu Centro de Estudiantes.</p>
+        <div class="button-group">
+            <button onclick="location.href='login.html'">Iniciar Sesión</button>
+            <button onclick="location.href='create_account.html'">Crear Cuenta</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVG2lINPrhmVHkSaxHJZGBqoxS30oSHTs",
+            authDomain: "kairo-f0cbb.firebaseapp.com",
+            projectId: "kairo-f0cbb",
+            storageBucket: "kairo-f0cbb.firebasestorage.app",
+            messagingSenderId: "513362025272",
+            appId: "1:513362025272:web:a158340fc21ea598d1ffcd",
+            measurementId: "G-HVDZ4RB09D"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            window.toggleTheme = toggleTheme; 
+            
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    console.log('Usuario ya logueado:', user.uid);
+                    // window.location.href = 'app_main.html'; // Descomentar si quieres redirigir automáticamente
+                }
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal de la App - Kairo</title>
+    <style>
+        /* CSS general para modo claro/oscuro */
+        :root {
+            /* Modo Claro */
+            --light-bg: #FFFFFF; /* Blanco */
+            --light-primary: #000080; /* Azul Marino */
+            --light-secondary: #F5F5DC; /* Beige */
+            --light-text: #000000; /* Negro */
+            --light-button-hover: #000066; /* Azul Marino más oscuro */
+            --light-nav-bg: #000080; /* Fondo barra nav - Azul Marino */
+            --light-nav-icon: #FFFFFF; /* Iconos y texto nav - Blanco */
+            --light-card-bg: #F0F0F0; /* Fondo de tarjetas de botón */
+            --light-card-shadow: rgba(0, 0, 0, 0.1);
+
+            /* Modo Oscuro */
+            --dark-bg: #000000; /* Negro */
+            --dark-primary: #00BFFF; /* Azul Relámpago */
+            --dark-secondary: #F5F5DC; /* Beige Claro */
+            --dark-text: #FFFFFF; /* Blanco */
+            --dark-button-hover: #009ACD; /* Azul Relámpago más oscuro */
+            --dark-nav-bg: #00BFFF; /* Fondo barra nav - Azul Relámpago */
+            --dark-nav-icon: #000000; /* Iconos y texto nav - Negro */
+            --dark-card-bg: #333333; /* Fondo de tarjetas de botón */
+            --dark-card-shadow: rgba(255, 255, 255, 0.15);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+        }
+
+        .header-title {
+            text-align: center;
+            padding: 20px;
+            font-size: 2em;
+            color: var(--light-primary);
+            transition: color 0.3s;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .welcome-message {
+            margin-bottom: 30px;
+            font-size: 1.5em;
+            color: var(--light-primary);
+        }
+        body.dark-mode .welcome-message {
+            color: var(--dark-primary);
+        }
+
+        .action-button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .action-button {
+            background-color: var(--light-primary);
+            color: var(--light-nav-icon); /* Texto blanco sobre azul marino */
+            border: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: var(--light-button-hover);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--light-nav-bg); /* Fondo de la barra de navegación */
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--light-nav-icon); /* Color de los iconos y texto en la barra de navegación */
+            font-size: 0.8em;
+            transition: color 0.3s;
+        }
+
+        .nav-item i {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .nav-item:hover {
+            color: var(--light-secondary);
+        }
+
+        /* Modo Oscuro */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .header-title {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode .action-button {
+            background-color: var(--dark-primary);
+            color: var(--dark-nav-icon); /* Texto negro sobre azul relámpago */
+            box-shadow: 0 5px 15px var(--dark-card-shadow);
+        }
+
+        body.dark-mode .action-button:hover {
+            background-color: var(--dark-button-hover);
+            box-shadow: 0 8px 20px var(--dark-card-shadow);
+        }
+
+        body.dark-mode .navbar {
+            background-color: var(--dark-nav-bg); /* Fondo de la barra de navegación en modo oscuro */
+            box-shadow: 0 -5px 15px var(--dark-card-shadow);
+        }
+
+        body.dark-mode .nav-item {
+            color: var(--dark-nav-icon); /* Color de los iconos y texto en la barra de navegación en modo oscuro */
+        }
+        body.dark-mode .nav-item:hover {
+            color: var(--dark-secondary);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--light-secondary);
+            color: var(--light-text);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--dark-secondary);
+            color: var(--dark-text);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
+
+    <h1 class="header-title">Página de la APP</h1>
+
+    <div class="main-content">
+        <p class="welcome-message" id="welcomeMessage">¡Hola!</p>
+        <div class="action-button-container">
+            <button class="action-button" id="createCenterBtn">Crear Centro de Estudiantes</button>
+            <button class="action-button" id="joinCenterBtn">Unirse a un Centro</button>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a href="app_main.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <i class="fas fa-cog"></i>
+            <span>Configuración</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user-circle"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVG2lINPrhmVHkSaxHJZGBqoxS30oSHTs",
+            authDomain: "kairo-f0cbb.firebaseapp.com",
+            projectId: "kairo-f0cbb",
+            storageBucket: "kairo-f0cbb.firebasestorage.app",
+            messagingSenderId: "513362025272",
+            appId: "1:513362025272:web:a158340fc21ea598d1ffcd",
+            measurementId: "G-HVDZ4RB09D"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            window.toggleTheme = toggleTheme;
+
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const createCenterBtn = document.getElementById('createCenterBtn');
+            const joinCenterBtn = document.getElementById('joinCenterBtn');
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const userDocRef = doc(db, 'users', user.uid);
+                    const userDoc = await getDoc(userDocRef);
+
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        const userName = userData.name || userData.username || 'Usuario';
+                        welcomeMessage.textContent = `¡Hola, ${userName}! ¿Qué quieres hacer?`;
+                    } else {
+                        console.warn("Usuario autenticado sin datos de perfil en Firestore. Redirigiendo a completar datos.");
+                        welcomeMessage.textContent = `¡Bienvenido! Completa tu perfil en la sección de Perfil.`;
+                    }
+
+                    // Ambos botones siempre visibles para que el usuario elija
+                    createCenterBtn.onclick = function() {
+                        window.location.href = 'create_center.html';
+                    };
+
+                    joinCenterBtn.onclick = function() {
+                        window.location.href = 'join_center.html';
+                    };
+
+                } else {
+                    alert('Debes iniciar sesión para acceder a la aplicación.');
+                    window.location.href = 'index.html';
+                }
+            });
+        };
+    </script>
+</body>
+</html>

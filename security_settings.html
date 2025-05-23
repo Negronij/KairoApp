@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Seguridad - Kairo</title>
+    <style>
+        /* Mantener estilos generales para consistencia */
+        :root {
+            /* Modo Claro */
+            --light-bg: #FFFFFF;
+            --light-primary: #000080;
+            --light-secondary: #F5F5DC;
+            --light-text: #000000;
+            --light-button-hover: #000066;
+            --light-input-border: #CCCCCC;
+            --light-input-focus-border: #000080;
+            --light-error-text: #FF0000;
+            --light-card-shadow: rgba(0, 0, 0, 0.05);
+            --light-nav-bg: #000080;
+            --light-nav-icon: #FFFFFF;
+
+            /* Modo Oscuro */
+            --dark-bg: #000000;
+            --dark-primary: #00BFFF;
+            --dark-secondary: #F5F5DC;
+            --dark-text: #FFFFFF;
+            --dark-button-hover: #009ACD;
+            --dark-input-border: #555555;
+            --dark-input-focus-border: #00BFFF;
+            --dark-error-text: #FF6666;
+            --dark-card-shadow: rgba(255, 255, 255, 0.1);
+            --dark-nav-bg: #00BFFF;
+            --dark-nav-icon: #000000;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+        }
+
+        .header-title {
+            text-align: center;
+            padding: 20px;
+            font-size: 2em;
+            color: var(--light-primary);
+            transition: color 0.3s;
+        }
+
+        .container {
+            background-color: var(--light-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--light-card-shadow);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            margin-top: 20px;
+            margin-bottom: 80px; /* Espacio para el navbar */
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        h1 {
+            color: var(--light-primary);
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            transition: color 0.3s;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .form-group input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2); /* Aumentar el tamaño del checkbox */
+        }
+
+        .form-group input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid var(--light-input-border);
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        .form-group input[type="text"]:focus {
+            border-color: var(--light-input-focus-border);
+            outline: none;
+        }
+
+        .code-input-container {
+            margin-top: 10px;
+            display: none; /* Oculto por defecto */
+        }
+
+        .error-message {
+            color: var(--light-error-text);
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
+        }
+
+        button {
+            background-color: var(--light-primary);
+            color: var(--light-nav-icon);
+            border: none;
+            padding: 15px 30px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--light-button-hover);
+        }
+
+        /* Modo Oscuro */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .header-title {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--dark-bg);
+            box-shadow: 0 10px 30px var(--dark-card-shadow);
+        }
+
+        body.dark-mode h1 {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode .form-group input[type="text"] {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            border-color: var(--dark-input-border);
+        }
+
+        body.dark-mode .form-group input[type="text"]:focus {
+            border-color: var(--dark-input-focus-border);
+        }
+
+        body.dark-mode .error-message {
+            color: var(--dark-error-text);
+        }
+
+        body.dark-mode button {
+            background-color: var(--dark-primary);
+            color: var(--dark-nav-icon);
+        }
+
+        body.dark-mode button:hover {
+            background-color: var(--dark-button-hover);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--light-secondary);
+            color: var(--light-text);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--dark-secondary);
+            color: var(--dark-text);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--light-nav-bg);
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--light-nav-icon);
+            font-size: 0.8em;
+            transition: color 0.3s;
+        }
+
+        .nav-item i {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .nav-item:hover {
+            color: var(--light-secondary);
+        }
+
+        body.dark-mode .navbar {
+            background-color: var(--dark-nav-bg);
+            box-shadow: 0 -5px 15px var(--dark-card-shadow);
+        }
+
+        body.dark-mode .nav-item {
+            color: var(--dark-nav-icon);
+        }
+        body.dark-mode .nav-item:hover {
+            color: var(--dark-secondary);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
+
+    <h1 class="header-title">Configuración de Seguridad del Centro</h1>
+
+    <div class="container">
+        <p>Selecciona los requisitos que los alumnos deberán cumplir al unirse a tu centro:</p>
+        <form id="securitySettingsForm">
+            <div class="form-group">
+                <label for="requireNameAndLastname">
+                    <input type="checkbox" id="requireNameAndLastname">
+                    Pedir Nombre y Apellido
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="requireDNI">
+                    <input type="checkbox" id="requireDNI">
+                    Pedir DNI
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="requireSecurityCode">
+                    <input type="checkbox" id="requireSecurityCode">
+                    Pedir Código de Seguridad
+                </label>
+                <div class="code-input-container" id="securityCodeContainer">
+                    <input type="text" id="securityCode" placeholder="Ingresa el código de seguridad (ej: KAIRO2024)">
+                    <span class="error-message" id="securityCodeError"></span>
+                </div>
+            </div>
+            <button type="submit">Finalizar Creación del Centro</button>
+        </form>
+    </div>
+
+    <nav class="navbar">
+        <a href="app_main.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <i class="fas fa-cog"></i>
+            <span>Configuración</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user-circle"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVG2lINPrhmVHkSaxHJZGBqoxS30oSHTs",
+            authDomain: "kairo-f0cbb.firebaseapp.com",
+            projectId: "kairo-f0cbb",
+            storageBucket: "kairo-f0cbb.firebasestorage.app",
+            messagingSenderId: "513362025272",
+            appId: "1:513362025272:web:a158340fc21ea598d1ffcd",
+            measurementId: "G-HVDZ4RB09D"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentCenterId = null; // Variable para almacenar el ID del centro
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            window.toggleTheme = toggleTheme;
+
+            onAuthStateChanged(auth, async (user) => {
+                if (!user) {
+                    alert('Debes iniciar sesión para configurar la seguridad del centro.');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Obtener el ID del centro desde la URL
+                const urlParams = new URLSearchParams(window.location.search);
+                currentCenterId = urlParams.get('centerId');
+
+                if (!currentCenterId) {
+                    alert('Error: No se especificó el ID del centro.');
+                    window.location.href = 'app_main.html';
+                    return;
+                }
+
+                // Verificar que el usuario actual sea el propietario del centro
+                const centerDocRef = doc(db, 'centers', currentCenterId);
+                const centerDoc = await getDoc(centerDocRef);
+
+                if (!centerDoc.exists() || centerDoc.data().ownerUid !== user.uid) {
+                    alert('Acceso denegado: Solo el propietario puede configurar la seguridad de este centro.');
+                    window.location.href = 'app_main.html';
+                    return;
+                }
+
+                // Opcional: Cargar configuración existente si el usuario regresa a esta página
+                const securityData = centerDoc.data().securityRequirements;
+                if (securityData) {
+                    document.getElementById('requireNameAndLastname').checked = securityData.requireNameAndLastname || false;
+                    document.getElementById('requireDNI').checked = securityData.requireDNI || false;
+                    document.getElementById('requireSecurityCode').checked = securityData.requireSecurityCode || false;
+                    document.getElementById('securityCode').value = securityData.securityCode || '';
+
+                    // Mostrar/ocultar el campo del código de seguridad
+                    if (securityData.requireSecurityCode) {
+                        document.getElementById('securityCodeContainer').style.display = 'block';
+                    }
+                }
+            });
+
+            // Lógica para mostrar/ocultar el campo del código de seguridad
+            document.getElementById('requireSecurityCode').addEventListener('change', function() {
+                const securityCodeContainer = document.getElementById('securityCodeContainer');
+                if (this.checked) {
+                    securityCodeContainer.style.display = 'block';
+                } else {
+                    securityCodeContainer.style.display = 'none';
+                    document.getElementById('securityCode').value = ''; // Limpiar el campo si se desactiva
+                    document.getElementById('securityCodeError').textContent = '';
+                }
+            });
+        };
+
+        document.getElementById('securitySettingsForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const requireNameAndLastname = document.getElementById('requireNameAndLastname').checked;
+            const requireDNI = document.getElementById('requireDNI').checked;
+            const requireSecurityCode = document.getElementById('requireSecurityCode').checked;
+            const securityCode = document.getElementById('securityCode').value.trim();
+
+            document.getElementById('securityCodeError').textContent = '';
+
+            if (requireSecurityCode && !securityCode) {
+                document.getElementById('securityCodeError').textContent = 'Debes ingresar un código de seguridad si lo activas.';
+                return;
+            }
+
+            if (!currentCenterId) {
+                alert('Error: No se pudo determinar el centro a configurar.');
+                return;
+            }
+
+            try {
+                const centerDocRef = doc(db, 'centers', currentCenterId);
+                await updateDoc(centerDocRef, {
+                    securityRequirements: {
+                        requireNameAndLastname: requireNameAndLastname,
+                        requireDNI: requireDNI,
+                        requireSecurityCode: requireSecurityCode,
+                        securityCode: requireSecurityCode ? securityCode : ''
+                    }
+                });
+
+                alert('Configuración de seguridad guardada. ¡Tu centro ha sido creado exitosamente!');
+                window.location.href = 'app_main.html'; // Redirige a la pantalla principal (Home) del centro
+
+            } catch (error) {
+                console.error('Error al guardar la configuración de seguridad:', error);
+                alert('Hubo un error al guardar la configuración. Por favor, inténtalo de nuevo.');
+            }
+        });
+    </script>
+</body>
+</html>

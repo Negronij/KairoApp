@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unirse a un Centro - Kairo</title>
+    <style>
+        /* Mantener estilos generales del app_main.html para consistencia */
+        :root {
+            /* Modo Claro */
+            --light-bg: #FFFFFF;
+            --light-primary: #000080;
+            --light-secondary: #F5F5DC;
+            --light-text: #000000;
+            --light-button-hover: #000066;
+            --light-input-border: #CCCCCC;
+            --light-input-focus-border: #000080;
+            --light-error-text: #FF0000;
+            --light-card-shadow: rgba(0, 0, 0, 0.05);
+            --light-nav-bg: #000080;
+            --light-nav-icon: #FFFFFF;
+
+            /* Modo Oscuro */
+            --dark-bg: #000000;
+            --dark-primary: #00BFFF;
+            --dark-secondary: #F5F5DC;
+            --dark-text: #FFFFFF;
+            --dark-button-hover: #009ACD;
+            --dark-input-border: #555555;
+            --dark-input-focus-border: #00BFFF;
+            --dark-error-text: #FF6666;
+            --dark-card-shadow: rgba(255, 255, 255, 0.1);
+            --dark-nav-bg: #00BFFF;
+            --dark-nav-icon: #000000;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+        }
+
+        .header-title {
+            text-align: center;
+            padding: 20px;
+            font-size: 2em;
+            color: var(--light-primary);
+            transition: color 0.3s;
+        }
+
+        .container {
+            background-color: var(--light-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--light-card-shadow);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            margin-top: 20px;
+            margin-bottom: 80px; /* Espacio para el navbar */
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        h1 {
+            color: var(--light-primary);
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            transition: color 0.3s;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid var(--light-input-border);
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--light-input-focus-border);
+            outline: none;
+        }
+
+        .error-message {
+            color: var(--light-error-text);
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
+        }
+
+        button {
+            background-color: var(--light-primary);
+            color: var(--light-nav-icon);
+            border: none;
+            padding: 15px 30px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--light-button-hover);
+        }
+
+        /* Modo Oscuro */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .header-title {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--dark-bg);
+            box-shadow: 0 10px 30px var(--dark-card-shadow);
+        }
+
+        body.dark-mode h1 {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode .form-group input {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            border-color: var(--dark-input-border);
+        }
+
+        body.dark-mode .form-group input:focus {
+            border-color: var(--dark-input-focus-border);
+        }
+
+        body.dark-mode .error-message {
+            color: var(--dark-error-text);
+        }
+
+        body.dark-mode button {
+            background-color: var(--dark-primary);
+            color: var(--dark-nav-icon);
+        }
+
+        body.dark-mode button:hover {
+            background-color: var(--dark-button-hover);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--light-secondary);
+            color: var(--light-text);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--dark-secondary);
+            color: var(--dark-text);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: var(--light-nav-bg);
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--light-nav-icon);
+            font-size: 0.8em;
+            transition: color 0.3s;
+        }
+
+        .nav-item i {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+
+        .nav-item:hover {
+            color: var(--light-secondary);
+        }
+
+        body.dark-mode .navbar {
+            background-color: var(--dark-nav-bg);
+            box-shadow: 0 -5px 15px var(--dark-card-shadow);
+        }
+
+        body.dark-mode .nav-item {
+            color: var(--dark-nav-icon);
+        }
+        body.dark-mode .nav-item:hover {
+            color: var(--dark-secondary);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
+
+    <h1 class="header-title">Unirse a un Centro de Estudiantes</h1>
+
+    <div class="container">
+        <form id="joinCenterForm">
+            <p>Introduce el código del centro al que deseas unirte:</p>
+            <div class="form-group">
+                <label for="centerCode">Código del Centro:</label>
+                <input type="text" id="centerCode" name="centerCode" required>
+                <span class="error-message" id="centerCodeError"></span>
+            </div>
+            <button type="submit">Unirse al Centro</button>
+        </form>
+    </div>
+
+    <nav class="navbar">
+        <a href="app_main.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <i class="fas fa-cog"></i>
+            <span>Configuración</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user-circle"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, query, collection, where, getDocs, doc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVG2lINPrhmVHkSaxHJZGBqoxS30oSHTs",
+            authDomain: "kairo-f0cbb.firebaseapp.com",
+            projectId: "kairo-f0cbb",
+            storageBucket: "kairo-f0cbb.firebasestorage.app",
+            messagingSenderId: "513362025272",
+            appId: "1:513362025272:web:a158340fc21ea598d1ffcd",
+            measurementId: "G-HVDZ4RB09D"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            window.toggleTheme = toggleTheme;
+
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                    alert('Debes iniciar sesión para unirte a un centro.');
+                    window.location.href = 'index.html';
+                }
+            });
+        };
+
+        document.getElementById('joinCenterForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const centerCode = document.getElementById('centerCode').value.trim();
+            const user = auth.currentUser;
+
+            document.getElementById('centerCodeError').textContent = '';
+
+            if (!centerCode) {
+                document.getElementById('centerCodeError').textContent = 'El código del centro no puede estar vacío.';
+                return;
+            }
+
+            if (!user) {
+                alert('No hay un usuario autenticado.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                // Buscar el centro por su nombre (aquí usamos el código como nombre para simplificar)
+                // En un caso real, el código debería ser un campo único y más seguro, como un ID corto generado.
+                const centersRef = collection(db, 'centers');
+                const q = query(centersRef, where('name', '==', centerCode)); // Usamos 'name' como código para la demo
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    document.getElementById('centerCodeError').textContent = 'No se encontró ningún centro con ese código.';
+                    return;
+                }
+
+                const centerDoc = querySnapshot.docs[0];
+                const centerData = centerDoc.data();
+                const centerId = centerDoc.id;
+
+                // Verificar si el usuario ya es miembro del centro
+                const isMember = centerData.members.some(member => member.uid === user.uid);
+                if (isMember) {
+                    alert('Ya eres miembro de este centro.');
+                    window.location.href = 'app_main.html';
+                    return;
+                }
+
+                // 1. Añadir el usuario a la lista de miembros del centro con rol "Alumno"
+                await updateDoc(doc(db, 'centers', centerId), {
+                    members: arrayUnion({ uid: user.uid, role: 'Alumno', joinedAt: serverTimestamp() })
+                });
+
+                // 2. Actualizar el rol y el centro asociado en el documento del usuario
+                await updateDoc(doc(db, 'users', user.uid), {
+                    role: 'Alumno', // Asignamos el rol de Alumno al unirse
+                    currentCenterId: centerId,
+                    currentCenterName: centerData.name
+                });
+
+                alert(`¡Te has unido al centro "${centerData.name}" exitosamente como Alumno!`);
+                window.location.href = 'app_main.html'; // Redirige a la página principal de la app o a una del centro
+
+            } catch (error) {
+                console.error('Error al unirse al centro o actualizar usuario:', error);
+                alert('Hubo un error al unirte al centro. Por favor, inténtalo de nuevo.');
+            }
+        });
+    </script>
+</body>
+</html>

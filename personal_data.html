@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus Datos Personales - Kairo</title>
+    <style>
+        /* CSS general para modo claro/oscuro */
+        :root {
+            /* Modo Claro */
+            --light-bg: #FFFFFF; /* Blanco */
+            --light-primary: #000080; /* Azul Marino */
+            --light-secondary: #F5F5DC; /* Beige */
+            --light-text: #000000; /* Negro */
+            --light-button-hover: #000066; /* Azul Marino más oscuro */
+            --light-input-border: #CCCCCC;
+            --light-input-focus-border: #000080;
+            --light-error-text: #FF0000;
+            --light-card-shadow: rgba(0, 0, 0, 0.05);
+            --light-nav-bg: #000080; /* Fondo barra nav - Azul Marino */
+            --light-nav-icon: #FFFFFF; /* Iconos y texto nav - Blanco */
+
+            /* Modo Oscuro */
+            --dark-bg: #000000; /* Negro */
+            --dark-primary: #00BFFF; /* Azul Relámpago */
+            --dark-secondary: #F5F5DC; /* Beige Claro */
+            --dark-text: #FFFFFF; /* Blanco */
+            --dark-button-hover: #009ACD; /* Azul Relámpago más oscuro */
+            --dark-input-border: #555555;
+            --dark-input-focus-border: #00BFFF;
+            --dark-error-text: #FF6666;
+            --dark-card-shadow: rgba(255, 255, 255, 0.1);
+            --dark-nav-bg: #00BFFF; /* Fondo barra nav - Azul Relámpago */
+            --dark-nav-icon: #000000; /* Iconos y texto nav - Negro */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: var(--light-bg); /* Por defecto modo claro */
+            color: var(--light-text);
+        }
+
+        .container {
+            background-color: var(--light-bg);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--light-card-shadow);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        h1 {
+            color: var(--light-primary);
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            transition: color 0.3s;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid var(--light-input-border);
+            border-radius: 8px;
+            font-size: 1em;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--light-input-focus-border);
+            outline: none;
+        }
+
+        .error-message {
+            color: var(--light-error-text);
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
+        }
+
+        button {
+            background-color: var(--light-primary);
+            color: var(--light-nav-icon); /* Texto blanco sobre azul marino */
+            border: none;
+            padding: 15px 30px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--light-button-hover);
+        }
+
+        /* Modo Oscuro */
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        body.dark-mode .container {
+            background-color: var(--dark-bg);
+            box-shadow: 0 10px 30px var(--dark-card-shadow);
+        }
+
+        body.dark-mode h1 {
+            color: var(--dark-primary);
+        }
+
+        body.dark-mode .form-group input {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+            border-color: var(--dark-input-border);
+        }
+
+        body.dark-mode .form-group input:focus {
+            border-color: var(--dark-input-focus-border);
+        }
+
+        body.dark-mode .error-message {
+            color: var(--dark-error-text);
+        }
+
+        body.dark-mode button {
+            background-color: var(--dark-primary);
+            color: var(--dark-nav-icon); /* Texto negro sobre azul relámpago */
+        }
+
+        body.dark-mode button:hover {
+            background-color: var(--dark-button-hover);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--light-secondary);
+            color: var(--light-text);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: var(--dark-secondary);
+            color: var(--dark-text);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Cambiar Tema</button>
+
+    <div class="container">
+        <h1>Tus Datos Personales</h1>
+        <form id="personalDataForm">
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" required>
+                <span class="error-message" id="nameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="lastname">Apellido:</label>
+                <input type="text" id="lastname" name="lastname" required>
+                <span class="error-message" id="lastnameError"></span>
+            </div>
+            <div class="form-group">
+                <label for="username">Nombre de Usuario:</label>
+                <input type="text" id="username" name="username" required>
+                <span class="error-message" id="usernameError"></span>
+            </div>
+            <button type="submit">Siguiente</button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVG2lINPrhmVHkSaxHJZGBqoxS30oSHTs",
+            authDomain: "kairo-f0cbb.firebaseapp.com",
+            projectId: "kairo-f0cbb",
+            storageBucket: "kairo-f0cbb.firebasestorage.app",
+            messagingSenderId: "513362025272",
+            appId: "1:513362025272:web:a158340fc21ea598d1ffcd",
+            measurementId: "G-HVDZ4RB09D"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            window.toggleTheme = toggleTheme;
+
+            const tempUserUid = sessionStorage.getItem('tempUserUid');
+            if (!tempUserUid) {
+                alert('No se pudo verificar la creación de la cuenta. Por favor, crea una cuenta primero.');
+                window.location.href = 'create_account.html';
+            }
+        };
+
+        document.getElementById('personalDataForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const lastname = document.getElementById('lastname').value;
+            const username = document.getElementById('username').value;
+
+            let isValid = true;
+
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('lastnameError').textContent = '';
+            document.getElementById('usernameError').textContent = '';
+
+            if (name.trim() === '') {
+                document.getElementById('nameError').textContent = 'El nombre no puede estar vacío.';
+                isValid = false;
+            }
+            if (lastname.trim() === '') {
+                document.getElementById('lastnameError').textContent = 'El apellido no puede estar vacío.';
+                isValid = false;
+            }
+            if (username.trim() === '') {
+                document.getElementById('usernameError').textContent = 'El nombre de usuario no puede estar vacío.';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            const userUid = sessionStorage.getItem('tempUserUid');
+            const userEmail = sessionStorage.getItem('tempUserEmail');
+
+            if (userUid && userEmail) {
+                try {
+                    await setDoc(doc(db, 'users', userUid), {
+                        email: userEmail,
+                        name: name,
+                        lastname: lastname,
+                        username: username,
+                        // El rol no se asigna aquí, se asignará al crear/unirse a un centro.
+                        createdAt: serverTimestamp()
+                    });
+                    console.log('Datos de usuario guardados en Firestore para UID:', userUid);
+
+                    sessionStorage.removeItem('tempUserUid');
+                    sessionStorage.removeItem('tempUserEmail');
+
+                    alert('¡Tus datos han sido guardados! Ahora elige un centro.');
+                    window.location.href = 'app_main.html'; // Redirige a la página principal de la app
+
+                } catch (error) {
+                    console.error('Error al guardar datos en Firestore:', error); // Log del error real
+                    alert('Hubo un error al guardar tus datos. Por favor, inténtalo de nuevo.');
+                }
+            } else {
+                alert('Error: No se encontró la información de usuario temporal. Por favor, crea una cuenta primero.');
+                window.location.href = 'create_account.html';
+            }
+        });
+    </script>
+</body>
+</html>
